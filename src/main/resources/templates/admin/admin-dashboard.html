@@ -1,0 +1,37 @@
+<div class="top-nav">
+    <!-- 其他导航项... -->
+    <button onclick="showAddStaffModal()" class="btn btn-primary">添加运营人员</button>
+</div>
+
+<!-- 添加运营人员的模态框 -->
+<div id="addStaffModal" class="modal">
+    <div class="modal-content">
+        <h2>添加运营人员</h2>
+        <form id="addStaffForm">
+            <div class="form-group">
+                <label>用户名</label>
+                <input type="text" name="username" required>
+            </div>
+            <div class="form-group">
+                <label>密码</label>
+                <input type="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label>真实姓名</label>
+                <input type="text" name="realName" required>
+            </div>
+            <div class="form-group">
+                <label>手机号</label>
+                <input type="tel" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label>邮箱</label>
+                <input type="email" name="email" required>
+            </div>
+            <div class="form-buttons">
+                <button type="submit" class="btn btn-primary">保存</button>
+                <button type="button" onclick="hideAddStaffModal()" class="btn btn-secondary">取消</button>
+            </div>
+        </form>
+    </div>
+</div> 

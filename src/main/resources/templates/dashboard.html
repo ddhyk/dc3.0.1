@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>运营数据面板 - 御膳房在线点餐系统</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">运营数据面板</h1>
+        </div>
+        
+        <!-- 数据卡片 -->
+        <div class="stats-cards">
+            <div class="dashboard-card">
+                <h3 class="metric-label">今日订单数</h3>
+                <div class="metric-value" th:text="${dashboardData.todayOrderCount}">0</div>
+                <div th:class="${dashboardData.orderGrowthRate >= 0 ? 'growth-positive' : 'growth-negative'}" 
+                     th:text="${#numbers.formatDecimal(dashboardData.orderGrowthRate, 1, 1) + '%'}">0%</div>
+            </div>
+            <div class="dashboard-card">
+                <h3 class="metric-label">活跃用户数</h3>
+                <div class="metric-value" th:text="${dashboardData.activeUserCount}">0</div>
+                <div th:class="${dashboardData.userGrowthRate >= 0 ? 'growth-positive' : 'growth-negative'}" 
+                     th:text="${#numbers.formatDecimal(dashboardData.userGrowthRate, 1, 1) + '%'}">0%</div>
+            </div>
+            <div class="dashboard-card">
+                <h3 class="metric-label">今日营业额</h3>
+                <div class="metric-value" th:text="${'￥' + #numbers.formatDecimal(dashboardData.totalRevenue, 1, 2)}">￥0.00</div>
+                <div th:class="${dashboardData.revenueGrowthRate >= 0 ? 'growth-positive' : 'growth-negative'}" 
+                     th:text="${#numbers.formatDecimal(dashboardData.revenueGrowthRate, 1, 1) + '%'}">0%</div>
+            </div>
+        </div>
+        
+        <!-- 图表区域 -->
+        <div class="charts-container">
+            <div class="chart-container">
+                <div id="dishSalesChart" class="chart"></div>
+            </div>
+            <div class="chart-container">
+                <div id="userActivityChart" class="chart"></div>
+            </div>
+        </div>
+        
+        <!-- 管理员日志 -->
+        <div class="admin-logs">
+            <h5>最近操作记录</h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>时间</th>
+                        <th>管理员</th>
+                        <th>IP地址</th>
+                        <th>操作内容</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="log : ${adminLogs}">
+                        <td th:text="${#temporals.format(log.operationTime, 'yyyy-MM-dd HH:mm:ss')}">2024-01-01 00:00:00</td>
+                        <td th:text="${log.adminUsername}">admin@example.com</td>
+                        <td th:text="${log.ipAddress}">127.0.0.1</td>
+                        <td th:text="${log.operation}">操作内容</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script src="/js/dashboard.js"></script>
+</body>
+</html> 
