@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>错误 - 御膳房在线点餐系统</title>
+    <link rel="stylesheet" href="/css/customer.css">
+</head>
+<body>
+    <div class="error-container">
+        <h1>出错了！</h1>
+        <p th:if="${message}" th:text="${message}">发生了未知错误</p>
+        <p th:unless="${message}">抱歉，系统遇到了一些问题</p>
+        <a href="/login" class="btn">返回登录页面</a>
+    </div>
+</body>
+</html> 

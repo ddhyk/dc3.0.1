@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>御膳房在线点餐系统 - 客户中心</title>
+    <link rel="stylesheet" href="/css/customer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <h1>御膳房在线点餐系统</h1>
+        <div class="navbar-links">
+            <a href="/customer/cart">购物车</a>
+            <a href="/customer/orders">我的订单</a>
+            <a href="/logout">退出登录</a>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="welcome-message" th:if="${message}">
+            <p th:text="${message}"></p>
+        </div>
+
+        <div class="menu-grid">
+            <!-- 菜品卡片 -->
+            <div class="menu-item" th:each="item : ${menuItems}">
+                <div class="menu-item-image">
+                    <img th:src="${item.imageUrl}" th:alt="${item.name}">
+                </div>
+                <div class="menu-item-info">
+                    <h3 th:text="${item.name}"></h3>
+                    <p class="description" th:text="${item.description}"></p>
+                    <p class="price" th:text="'￥' + ${item.price}"></p>
+                    <div class="add-to-cart">
+                        <div class="quantity-control">
+                            <button onclick="decreaseQuantity(this)">-</button>
+                            <input type="number" value="1" min="1" class="quantity-input">
+                            <button onclick="increaseQuantity(this)">+</button>
+                        </div>
+                        <button class="btn-add" th:onclick="'addToCart(' + ${item.id} + ', this)'">加入购物车</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 聊天机器人图标 -->
+    <div class="floating-chat-icon" onclick="toggleChatModal()">
+        <i class="fas fa-robot"></i>
+    </div>
+
+    <!-- 聊天模态框 -->
+    <div class="chat-modal" id="chatModal">
+        <div class="chat-header">
+            <h3>智能点餐助手</h3>
+            <button class="close-btn" onclick="toggleChatModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+        </div>
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="请输入您的问题..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 悬浮按钮组 -->
+    <div class="floating-chat-icon" onclick="toggleChatModal()">
+        <i class="fas fa-robot"></i>
+    </div>
+
+    <div class="lucky-draw-btn" onclick="drawWheel()">
+        <i class="fas fa-gift"></i>
+    </div>
+
+    <div class="floating-cart-icon" onclick="location.href='/customer/cart'">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count" id="cartCount">0</span>
+    </div>
+
+    <!-- 先加载 marked 库 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- 再加载自定义脚本 -->
+    <script src="/js/customer.js"></script>
+</body>
+</html> 

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的订单 - 御膳房在线点餐系统</title>
+    <link rel="stylesheet" href="/css/customer.css">
+</head>
+<body>
+    <nav class="navbar">
+        <h1>御膳房在线点餐系统</h1>
+        <div class="navbar-links">
+            <a href="/customer">返回菜单</a>
+            <a href="/customer/cart">购物车</a>
+            <a href="/logout">退出登录</a>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <h2>我的订单</h2>
+        
+        <div class="orders-container">
+            <div class="order-type-tabs">
+                <button class="tab-btn active" data-type="all">全部订单</button>
+                <button class="tab-btn" data-type="DINE_IN">堂食订单</button>
+                <button class="tab-btn" data-type="TAKEOUT">外卖订单</button>
+            </div>
+            
+            <div th:if="${orders.empty}" class="no-orders">
+                <p>暂无订单记录</p>
+            </div>
+            
+            <div th:unless="${orders.empty}" class="order-list">
+                <div th:each="order : ${orders}" class="order-item" th:data-type="${order.orderType}">
+                    <div class="order-header">
+                        <div class="order-header-left">
+                            <span class="order-id">订单号：#[[${order.id}]]</span>
+                            <span class="order-type" th:classappend="${order.orderType == 'TAKEOUT' ? 'takeout' : 'dine-in'}"
+                                  th:text="${order.orderType == 'TAKEOUT' ? '外卖' : '堂食'}">
+                            </span>
+                        </div>
+                        <div class="order-header-right">
+                            <span class="order-time" th:text="${#temporals.format(order.orderTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                            <span class="order-status" th:classappend="${order.status.toLowerCase()}"
+                                  th:text="${order.status == 'PENDING' ? '待处理' :
+                                           order.status == 'PROCESSING' ? '处理中' :
+                                           order.status == 'COMPLETED' ? '已完成' :
+                                           order.status == 'CANCELLED' ? '已取消' :
+                                           order.status}">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="order-details">
+                        <div class="info-section">
+                            <h4>订单内容</h4>
+                            <div class="order-items" th:text="${order.orderItems}"></div>
+                            <div class="order-total">总金额：￥<span th:text="${#numbers.formatDecimal(order.total, 1, 2)}"></span></div>
+                        </div>
+                        
+                        <div class="info-section" th:if="${order.orderType == 'TAKEOUT'}">
+                            <h4>配送信息</h4>
+                            <div class="info-item">
+                                <strong>收货人：</strong>
+                                <span th:text="${order.customerName}"></span>
+                            </div>
+                            <div class="info-item">
+                                <strong>联系电话：</strong>
+                                <span th:text="${order.contactPhone}"></span>
+                            </div>
+                            <div class="info-item">
+                                <strong>配送地址：</strong>
+                                <span th:text="${order.deliveryAddress}"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="info-section" th:if="${order.orderType == 'DINE_IN'}">
+                            <h4>就餐信息</h4>
+                            <div class="info-item">
+                                <strong>桌号：</strong>
+                                <span th:text="${order.tableNumber}"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="info-section" th:if="${order.remarks}">
+                            <h4>备注</h4>
+                            <div class="info-item" th:text="${order.remarks}"></div>
+                        </div>
+                        
+                        <div class="draw-code" th:if="${order.drawCode}">
+                            <strong>抽奖码：</strong>
+                            <span th:text="${order.drawCode}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const orderItems = document.querySelectorAll('.order-item');
+            
+            // 添加调试日志
+            console.log('所有订单项：', orderItems);
+            orderItems.forEach(item => {
+                console.log('订单类型：', item.dataset.type);
+            });
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    // 给当前按钮添加active类
+                    this.classList.add('active');
+                    
+                    const type = this.dataset.type;
+                    console.log('选择的类型：', type);
+                    
+                    // 显示/隐藏对应类型的订单
+                    orderItems.forEach(item => {
+                        const orderType = item.dataset.type;
+                        console.log('检查订单：', orderType, '是否匹配：', type);
+                        if (type === 'all' || orderType === type) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>御膳房在线点餐系统 - 注册</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <h1>注册系统</h1>
+        <div th:if="${message}" class="message">
+            <p th:text="${message}"></p>
+        </div>
+        <div th:if="${error}" class="error">
+            <p th:text="${error}"></p>
+        </div>
+        <form action="/register" method="post">
+            <div class="input-group">
+                <input type="email" name="email" placeholder="请输入邮箱" 
+                       autocomplete="username" required>
+            </div>
+            <div class="input-group">
+                <input type="password" name="password" placeholder="设置密码" 
+                       autocomplete="new-password" required>
+            </div>
+            <button type="submit">注册</button>
+        </form>
+        <div class="register-link">
+            <a href="/login">已有账号？立即登录</a>
+        </div>
+    </div>
+    <script src="/js/login.js"></script>
+    
+</body>
+</html> 

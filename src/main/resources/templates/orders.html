@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>订单页面</title>
+</head>
+<body>
+    <h1>订单列表</h1>
+    <table>
+        <tr>
+            <th>订单ID</th>
+            <th>客户ID</th>
+            <th>下单时间</th>
+            <th>状态</th>
+        </tr>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}"></td>
+            <td th:text="${order.customerId}"></td>
+            <td th:text="${order.orderDate}"></td>
+            <td th:text="${order.status}"></td>
+        </tr>
+    </table>
+</body>
+</html> 
